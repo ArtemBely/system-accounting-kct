@@ -1,0 +1,57 @@
+plugins {
+    id 'org.springframework.boot' version '2.4.5'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    id 'war'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    //implementation 'org.slf4j:slf4j-api:1.7.30'
+    compileOnly 'org.projectlombok:lombok:1.18.4'
+    annotationProcessor 'org.projectlombok:lombok:1.18.4'
+
+    // Jackson Encode && Decode JSON
+    //implementation 'io.github.openfeign:feign-jackson'
+    implementation 'org.modelmapper:modelmapper:3.1.1'
+    implementation 'io.github.openfeign:feign-jackson:9.3.1'
+    //Generovani Swagger na zaklade rest api
+    implementation 'org.springdoc:springdoc-openapi-ui:1.6.14'
+    //Package for psql
+    implementation 'org.postgresql:postgresql:42.4.3'
+    //JPA for psql
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.7.8'
+    //ModelMapper
+    implementation 'org.modelmapper:modelmapper:3.1.1'
+    //Validacce vstupnich dat
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    testImplementation 'org.awaitility:awaitility:4.2.0'
+    //work with excel
+    implementation 'org.apache.poi:poi-ooxml:5.2.3'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+bootWar {
+    enabled = true
+}
