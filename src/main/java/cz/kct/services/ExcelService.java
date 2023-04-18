@@ -21,15 +21,6 @@ public class ExcelService {
     public static final String FILE_PATH = "C:\\Users\\belysheva\\Downloads\\exportdohnalek.xls";
     private final String tableName = "Worklogs";
     private final ExcelRepository excelRepository;
-//    public String readFromFile() throws ExcelException {
-//        Optional<Workbook> vOutput = ExcelUtility.getWorkBook(FILE_PATH);
-//        if(vOutput.isPresent()) {
-//            return ExcelUtility.getValue(ROW, COLUMN, vOutput.get(), tableName);
-//        }
-//        else {
-//            throw new ExcelException("File path is not valid");
-//        }
-//    }
 
     public String readFromFile() throws ExcelException {
         Optional<Workbook> vOutput = ExcelUtility.getWorkBook(FILE_PATH);
