@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @Entity(name="TimeSheetEntity")
 @Builder(toBuilder = true)
-@Table(name="system_accounting")
+@Table(name="system_accounting_kct")
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
@@ -18,19 +18,20 @@ import java.util.UUID;
 
 public class TimeSheetEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name="ID", nullable = false)
     private UUID id;
-    @Column(name="DATE", nullable = false)
+    @Column(name="DATE", columnDefinition = "DATE", nullable = false)
     private LocalDate date;
     @Column(name="TYPE_OF_ITEM", nullable = false)
     private int typeOfItem;
-    @Column(name="PROJECT_NAME", nullable = false)
-    private String projectName; //Enum
     @Column(name="HOURS", nullable = false)
     private double hours;
+    @Column(name="PROJECT_NAME", nullable = false)
+    private String projectName; //Enum
     @Column(name="DESCRIPTION", nullable = false)
     private String description;
     @Column(name="KIND")
     private String kind;
+
 }

@@ -2,13 +2,12 @@ package cz.kct.utilities;
 
 import cz.kct.data.entity.TimeSheetEntity;
 import cz.kct.data.enums.FixedValuesEnum;
-import cz.kct.data.enums.KindEnum;
-import cz.kct.utilities.DefinitionUtility;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -60,8 +59,8 @@ public class ExcelUtility {
                     UUID.randomUUID(),
                     DateConvertUtility.parseToLocalDate(myrow.getCell(LOCAL_DATE_ROW).toString()),
                     FixedValuesEnum.INVOICED_DAY.getValue(),
-                    myrow.getCell(PROJECT_NAME_ROW).toString(),
                     Double.parseDouble(myrow.getCell(HOURS_ROW).toString()),
+                    ProjectNumberUtility.defineProjectNumber(myrow.getCell(ACCOUNT_NAME_ROW).toString(), myrow.getCell(ISSUE_SUMMARY_ROW).toString()),
                     myrow.getCell(ISSUE_KEY_ROW).toString().concat(" " + myrow.getCell(DESCRIPTION_ROW).toString()),
                     DefinitionUtility.defineKind(myrow.getCell(ACCOUNT_NAME_ROW).toString(), myrow.getCell(ISSUE_SUMMARY_ROW).toString())
                 );
