@@ -1,7 +1,8 @@
 package cz.kct.data.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import cz.kct.data.enums.KindEnum;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import cz.kct.data.entity.DzcEntity;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -9,9 +10,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.PositiveOrZero;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.UUID;
 
 @Setter
@@ -19,8 +18,9 @@ import java.util.UUID;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
 @Builder(toBuilder = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 
 public class TimeSheetDto {
     private UUID id;
@@ -37,6 +37,7 @@ public class TimeSheetDto {
     private String projectName; //Enum
     @NotEmpty
     private String description;
-    @NonNull
+    @NotEmpty
     private String kind;
+    private DzcEntity dzc_id;
 }

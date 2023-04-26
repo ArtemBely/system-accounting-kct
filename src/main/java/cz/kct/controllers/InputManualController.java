@@ -16,8 +16,22 @@ import java.util.List;
 @RequestMapping("/manual")
 public class InputManualController {
     private final ExcelService excelService;
-    @Operation(summary="creation")
+    @Operation(summary="save")
     @PostMapping("/v1/save")
+    public void insertOne(@Valid @RequestBody TimeSheetDto timeSheetDto) {
+        try{
+            log.info("start process insert item in controller: {}",  timeSheetDto);
+            excelService.insertOne(timeSheetDto);
+            log.info("end process insert item in controller: {}",  timeSheetDto);
+        }
+        catch (Exception ex) {
+            log.error(ex.getMessage());
+        }
+    }
+
+    //test implementation for showing of array
+    @Operation(summary="save array")
+    @PostMapping("/v1/save_array")
     public void insert(@Valid @RequestBody List<TimeSheetDto> timeSheetDto) {
         try{
             log.info("start process insert list of items in controller: {}",  timeSheetDto);
@@ -27,12 +41,5 @@ public class InputManualController {
         catch (Exception ex) {
             log.error(ex.getMessage());
         }
-    }
-
-    @PostMapping("/v1/test")
-    public void insertTest(@Valid @RequestBody TimeSheetDto timeSheetDto) {
-        log.info("start process insert list of items in controller: {}",  timeSheetDto);
-        excelService.insertTest(timeSheetDto);
-        log.info("end process insert list of items in controller: {}",  timeSheetDto);
     }
 }
