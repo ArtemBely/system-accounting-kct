@@ -18,8 +18,6 @@ import java.util.List;
 
 public class Test {
     private final ExcelService excelService;
-    private final DzcService dzcService;
-
     @GetMapping("/v1/get")
     public void showData() {
         try {
@@ -31,19 +29,4 @@ public class Test {
             log.error(ex.getMessage());
         }
     }
-    @GetMapping("/v1/join")
-    public List<TimeSheetEntity> joinDzcAndTickets() {
-        return dzcService.joinTables();
-    }
-//    @GetMapping("/v1/control_dzc")
-//    public void checkDzc() {
-//        try {
-//            log.info("start process of checking dzc from database");
-//            dzcService.findAndSaveDzcIfDoesNotExist("DZC5W3A");
-//            log.info("end process of checking dzc from database");
-//        }
-//        catch (Exception ex) {
-//            log.error(ex.getMessage());
-//        }
-//    }
 }

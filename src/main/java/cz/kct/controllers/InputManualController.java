@@ -1,7 +1,8 @@
 package cz.kct.controllers;
 
 import cz.kct.data.dto.TimeSheetDto;
-import cz.kct.services.ExcelService;
+import cz.kct.data.entity.TimeSheetEntity;
+import cz.kct.services.DzcService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,31 +16,21 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/manual")
 public class InputManualController {
-    private final ExcelService excelService;
+    private final DzcService dzcService;
     @Operation(summary="save")
     @PostMapping("/v1/save")
     public void insertOne(@Valid @RequestBody TimeSheetDto timeSheetDto) {
         try{
             log.info("start process insert item in controller: {}",  timeSheetDto);
-            excelService.insertOne(timeSheetDto);
+            dzcService.insertOne(timeSheetDto);
             log.info("end process insert item in controller: {}",  timeSheetDto);
         }
         catch (Exception ex) {
-            log.error(ex.getMessage());
+            log.error("Error message", ex);
         }
     }
-
-    //test implementation for showing of array
-    @Operation(summary="save array")
-    @PostMapping("/v1/save_array")
-    public void insert(@Valid @RequestBody List<TimeSheetDto> timeSheetDto) {
-        try{
-            log.info("start process insert list of items in controller: {}",  timeSheetDto);
-            excelService.insert(timeSheetDto);
-            log.info("end process insert list of items in controller: {}",  timeSheetDto);
-        }
-        catch (Exception ex) {
-            log.error(ex.getMessage());
-        }
+    @GetMapping("/v1/join")
+    public List<TimeSheetEntity> joinDzcAndTickets() {
+        return dzcService.joinTables();
     }
 }

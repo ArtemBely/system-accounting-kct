@@ -19,54 +19,19 @@ import java.util.Optional;
 @AllArgsConstructor
 
 public class ExcelService {
-    public static final int ROW = 0;
-    public static final int COLUMN = 0;
-    //public static final String FILE_PATH = "C:\\Users\\belysheva\\Downloads\\tool_v6 (1).xlsm";
     public static final String FILE_PATH = "C:\\Users\\belysheva\\Downloads\\exportdohnalek.xls";
     private final String tableName = "Worklogs";
     private final ExcelRepository excelRepository;
-    private final DzcService dzcService;
-    private ExcelMapper excelMapper;
-
+    private final DzcRepository dzcRepository;
     public String readFromFile() throws ExcelException {
         Optional<Workbook> vOutput = ExcelUtility.getWorkBook(FILE_PATH);
         if(vOutput.isPresent()) {
             log.info("reading data ... ");
-            ExcelUtility.getValue(vOutput.get(), tableName, excelRepository, dzcService);
+            ExcelUtility.getValue(vOutput.get(), tableName, excelRepository, dzcRepository);
             return "Data was accepted";
         }
         else {
             throw new ExcelException("File path is not valid");
         }
     }
-
-    public void insertOne(TimeSheetDto item) throws ExcelException {
-        log.info("start process insert entity in services");
-        if(item != null) {
-                TimeSheetEntity timeSheetEntity = excelMapper.mapToEntity(item);
-                log.info("start process into db {}", timeSheetEntity);
-                excelRepository.save(timeSheetEntity);
-                log.info("end process insert item in services");
-        }
-        else {
-            throw new ExcelException("Item was not presented");
-        }
-    }
-
-    //test implementation for showing of array
-    public void insert(List<TimeSheetDto> items) throws ExcelException {
-        log.info("start process insert entity in services");
-        if(items != null) {
-            for(TimeSheetDto item : items) {
-                TimeSheetEntity timeSheetEntity = excelMapper.mapToEntity(item);
-                log.info("start process into db {}", timeSheetEntity);
-                excelRepository.save(timeSheetEntity);
-                log.info("end process insert item in services");
-            }
-        }
-        else {
-            throw new ExcelException("Items array is not valid");
-        }
-    }
-
 }

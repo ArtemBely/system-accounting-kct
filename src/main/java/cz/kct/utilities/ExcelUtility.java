@@ -3,8 +3,8 @@ package cz.kct.utilities;
 import cz.kct.data.entity.DzcEntity;
 import cz.kct.data.entity.TimeSheetEntity;
 import cz.kct.data.enums.FixedValuesEnum;
+import cz.kct.repository.DzcRepository;
 import cz.kct.repository.ExcelRepository;
-import cz.kct.services.DzcService;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
@@ -31,23 +31,23 @@ public class ExcelUtility {
             FileInputStream fis = new FileInputStream(filePath);
             Optional<Workbook> wb = Optional.of(WorkbookFactory.create(fis));
             return wb;
-        } catch(IOException e) {
-            log.error("Wrong file name. {}", e.getMessage());
+        } catch(IOException ex) {
+            log.error("Error message: ", ex);
             return Optional.ofNullable(null);
         }
     }
 
-    public void getValue(Workbook wb, String tableName, ExcelRepository excelRepository, DzcService dzcService) {
+    public void getValue(Workbook wb, String tableName, ExcelRepository excelRepository, DzcRepository dzcRepository) {
         Sheet sheet = wb.getSheet(tableName);
         for (Row myrow : sheet) {
             if (myrow.getRowNum() != DECLARATION_FIELD_ROW)
-                    addItemToList(myrow, excelRepository, dzcService);
+                    addItemToList(myrow, excelRepository, dzcRepository);
         }
     }
 
-    public void addItemToList(Row myrow, ExcelRepository excelRepository, DzcService dzcService) {
+    public void addItemToList(Row myrow, ExcelRepository excelRepository, DzcRepository dzcRepository) {
         try {
-            if (myrow.getRowNum() == DEFINITION_DZC_ROW) dzcService.findAndSaveDzcIfDoesNotExist(myrow.getCell(DZC_ROW).toString());
+            if (myrow.getRowNum() == DEFINITION_DZC_ROW) FindAndSaveDzcUtility.findAndSaveDzcIfDoesNotExist(myrow.getCell(DZC_ROW).toString(), dzcRepository);
             timeSheetEntity = new TimeSheetEntity(
                     DateConvertUtility.parseToLocalDate(myrow.getCell(LOCAL_DATE_ROW).toString()),
                     FixedValuesEnum.INVOICED_DAY.getValue(),
@@ -60,7 +60,7 @@ public class ExcelUtility {
                 excelRepository.save(timeSheetEntity);
             }
             catch (Exception ex) {
-                log.error(ex.getMessage());
+                log.error("Error message: ", ex);
             }
 
     }
