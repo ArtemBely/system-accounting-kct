@@ -18,7 +18,7 @@ public class FindAndSaveDzcUtility {
             Optional<DzcEntity> dzcEntityOptional = dzcRepository.findById(dzc);
             if(!dzcEntityOptional.isPresent()) {
                 dzcRepository.save(new DzcEntity(dzc));
-                log.info("DZC was saved");
+                log.info("DZC was saved: {}", dzc);
             }
         }
         else throw new ExcelException("Dzc doesn't accepted");
