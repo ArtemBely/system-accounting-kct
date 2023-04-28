@@ -19,6 +19,7 @@ public class Config {
         ObjectMapper objectMapper = new ObjectMapper();
         return new JacksonEncoder(objectMapper);
     }
+
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();

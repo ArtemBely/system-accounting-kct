@@ -34,7 +34,7 @@ public class TimeSheetDto {
     @Max(24)
     private double hours;
     @NotEmpty
-    private String projectName; //Enum
+    private String projectName;
     @NotEmpty
     private String description;
     @NotEmpty

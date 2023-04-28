@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 import javax.persistence.*;
 import java.util.List;
 
-@Entity(name="DzcEntity")
+@Entity(name = "DzcEntity")
 @Builder(toBuilder = true)
-@Table(name="dzc")
+@Table(name = "dzc")
 @NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
@@ -20,8 +20,7 @@ import java.util.List;
 public class DzcEntity {
     @Id
     @NonNull
-    //@GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name="DZC", nullable = false)
+    @Column(name = "DZC", nullable = false)
     private String dzc;
     @OneToMany(targetEntity = TimeSheetEntity.class, mappedBy = "dzc_id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore

@@ -8,9 +8,9 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.UUID;
 
-@Entity(name="TimeSheetEntity")
+@Entity(name = "TimeSheetEntity")
 @Builder(toBuilder = true)
-@Table(name="system_accounting_kct")
+@Table(name = "system_accounting_kct")
 @NoArgsConstructor
 @RequiredArgsConstructor
 @AllArgsConstructor
@@ -20,26 +20,26 @@ import java.util.UUID;
 
 public class TimeSheetEntity {
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    @Column(name="ID")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ID")
     private UUID id;
     @NonNull
-    @Column(name="DATE", columnDefinition = "DATE", nullable = false)
+    @Column(name = "DATE", columnDefinition = "DATE", nullable = false)
     private LocalDate date;
     @NonNull
-    @Column(name="TYPE_OF_ITEM", nullable = false)
+    @Column(name = "TYPE_OF_ITEM", nullable = false)
     private int typeOfItem;
     @NonNull
-    @Column(name="HOURS", nullable = false)
+    @Column(name = "HOURS", nullable = false)
     private double hours;
     @NonNull
-    @Column(name="PROJECT_NAME", nullable = false)
-    private String projectName; //Enum
+    @Column(name = "PROJECT_NAME", nullable = false)
+    private String projectName;
     @NonNull
-    @Column(name="DESCRIPTION", nullable = false)
+    @Column(name = "DESCRIPTION", nullable = false)
     private String description;
     @NonNull
-    @Column(name="KIND")
+    @Column(name = "KIND")
     private String kind;
     @NonNull
     @ManyToOne(fetch = FetchType.LAZY)

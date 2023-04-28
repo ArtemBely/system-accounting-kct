@@ -17,18 +17,29 @@ import java.util.List;
 @RequestMapping("/manual")
 public class InputManualController {
     private final DzcService dzcService;
-    @Operation(summary="save")
+
+    /**
+     * Method for insertion object to database
+     *
+     * @param timeSheetDto object of Timesheet
+     */
+    @Operation(summary = "save")
     @PostMapping("/v1/save")
     public void insertOne(@Valid @RequestBody TimeSheetDto timeSheetDto) {
-        try{
-            log.info("start process insert item in controller: {}",  timeSheetDto);
+        try {
+            log.info("start process insert item in controller: {}", timeSheetDto);
             dzcService.insertOne(timeSheetDto);
-            log.info("end process insert item in controller: {}",  timeSheetDto);
-        }
-        catch (Exception ex) {
+            log.info("end process insert item in controller: {}", timeSheetDto);
+        } catch (Exception ex) {
             log.error("Error message", ex);
         }
     }
+
+    /**
+     * Method for receiving joined objects
+     *
+     * @return List of joined objects where object correspond to DZC
+     */
     @GetMapping("/v1/join")
     public List<TimeSheetEntity> joinDzcAndTickets() {
         return dzcService.joinTables();

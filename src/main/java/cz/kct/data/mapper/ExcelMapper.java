@@ -11,10 +11,12 @@ import org.springframework.stereotype.Component;
 
 public class ExcelMapper {
     private final ModelMapper modelMapper;
-    public TimeSheetEntity mapToEntity(TimeSheetDto dto){
+
+    public TimeSheetEntity mapToEntity(TimeSheetDto dto) {
         return modelMapper.map(dto, TimeSheetEntity.class).toBuilder().build();
     }
-    public TimeSheetDto mapToDto(TimeSheetEntity entity){
+
+    public TimeSheetDto mapToDto(TimeSheetEntity entity) {
         return modelMapper.map(entity, TimeSheetDto.class).toBuilder().build();
     }
 }

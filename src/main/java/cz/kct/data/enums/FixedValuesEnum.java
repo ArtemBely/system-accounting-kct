@@ -7,9 +7,11 @@ public enum FixedValuesEnum {
     INVOICED_DAY(800),
     NOT_INVOICED_DAY(810);
     private final int value;
+
     FixedValuesEnum(int value) {
         this.value = value;
     }
+
     public int getValue() {
         return value;
     }

@@ -9,6 +9,7 @@ import javax.validation.constraints.NotEmpty;
 @Setter
 @Getter
 @ToString
+@NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
 @JsonIgnoreProperties(ignoreUnknown = true)

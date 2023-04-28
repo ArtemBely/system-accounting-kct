@@ -1,5 +1,6 @@
 package cz.kct.utilities;
 
+import cz.kct.constants.DefinitionUtilityConstants;
 import cz.kct.data.enums.KindEnum;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
@@ -7,21 +8,35 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @UtilityClass
 public class DefinitionUtility {
-    public static final String VALUATION = "Ocenění";
-    public static final String PRIORITIZATION = "Prioritizace";
-    public static final String DEFINE_SUPPORT = "FIBAMS EXT Support account";
-    public static final String DEFINE_DEV = "FIBAMS EXT Development account";
 
+    /**
+     * Method for defining of type of developer's work
+     *
+     * @param inputAccountName  account name field from Excel sheet
+     * @param inputIssueSummary issue summary field from Excel sheet
+     * @return type of developer's work
+     * @see cz.kct.data.enums.KindEnum
+     */
     public String defineKind(String inputAccountName, String inputIssueSummary) {
         String output;
-        if(inputAccountName.equals(DEFINE_SUPPORT)) output = KindEnum.SUPPORT.getValue();
-        else if (inputAccountName.equals(DEFINE_DEV) || findDefinition(inputIssueSummary)) {
+        if (inputAccountName.equals(DefinitionUtilityConstants.DEFINE_SUPPORT)) {
+            output = KindEnum.SUPPORT.getValue();
+        } else if (inputAccountName.equals(DefinitionUtilityConstants.DEFINE_DEV) || findDefinition(inputIssueSummary)) {
             output = KindEnum.DEVELOPMENT.getValue();
-        } else  output = KindEnum.VISPART.getValue();
+        } else {
+            output = KindEnum.VISPART.getValue();
+        }
         return output;
     }
+
+    /**
+     * Method return true if input string contains VALUATION or PRIORITIZATION
+     *
+     * @param inputIssueSummary issue summary field from Excel sheet
+     * @return true if object contains record VALUATION or PRIORITIZATION
+     */
     public boolean findDefinition(String inputIssueSummary) {
-        return(inputIssueSummary.toLowerCase().contains(VALUATION.toLowerCase()) ||
-                inputIssueSummary.toLowerCase().contains(PRIORITIZATION.toLowerCase()));
+        return (inputIssueSummary.toLowerCase().contains(DefinitionUtilityConstants.VALUATION.toLowerCase()) ||
+                inputIssueSummary.toLowerCase().contains(DefinitionUtilityConstants.PRIORITIZATION.toLowerCase()));
     }
 }
