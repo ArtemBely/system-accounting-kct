@@ -4,6 +4,7 @@ import cz.kct.data.dto.DzcDto;
 import cz.kct.data.dto.TimeSheetDto;
 import cz.kct.data.entity.DzcEntity;
 import cz.kct.data.entity.TimeSheetEntity;
+import cz.kct.data.enums.FixedValuesEnum;
 import cz.kct.data.mapper.DzcMapper;
 import cz.kct.data.mapper.ExcelMapper;
 import cz.kct.exceptions.ExcelException;
@@ -12,7 +13,9 @@ import cz.kct.repository.ExcelRepository;
 import cz.kct.utilities.FindDzcUtility;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -42,17 +45,40 @@ public class DzcService {
      * @param timeSheetDto incoming Excel object
      * @throws ExcelException
      */
-    public void insertOne(TimeSheetDto timeSheetDto) throws ExcelException {
+    public void insertOne(TimeSheetDto timeSheetDto) {
         log.info("start process insert entity in services");
-        if (timeSheetDto != null) {
+        try {
             DzcDto dzcDto = dzcMapper.mapToDto(timeSheetDto.getDzc_id());
             insertDzcIfDoesNotExist(dzcDto);
             TimeSheetEntity timeSheetEntity = excelMapper.mapToEntity(timeSheetDto);
+            checkIfDatesAreIncompatible(dzcDto, timeSheetDto);
             excelRepository.save(timeSheetEntity);
-            //checkIfDatesAreIncompatible(timeSheetDto.getDzc_id());
-        } else {
-            throw new ExcelException("Item was not presented");
+        } catch (ResponseStatusException ex) {
+            log.error("Error message: ", ex);
         }
+    }
+
+    /**
+     * Method find list of dzc records for same date when customer insert One record and compare
+     * if Invoice day (800) in insertable date is not match to Sick day or Holiday in already existing records.
+     * If incorrect codes match method go throw ResponseStatusException.
+     *
+     * @param dzc          search the list of records with same dzc value
+     * @param timeSheetDto incoming timesheet record
+     * @throws ResponseStatusException
+     * @see cz.kct.data.enums.FixedValuesEnum
+     */
+    public void checkIfDatesAreIncompatible(DzcDto dzc, TimeSheetDto timeSheetDto) throws ResponseStatusException {
+        getAllRecordsByDzc(dzc)
+                .stream()
+                .filter(item -> item.getDate().equals(timeSheetDto.getDate()))
+                .forEach(item -> {
+                    if (item.getTypeOfItem() == FixedValuesEnum.INVOICED_DAY.getValue() &&
+                            (timeSheetDto.getTypeOfItem() == FixedValuesEnum.SICK_DAY.getValue() ||
+                                    timeSheetDto.getTypeOfItem() == FixedValuesEnum.HOLIDAY.getValue())) {
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not compatible type of code. Please enter correct code for this date.");
+                    }
+                });
     }
 
     /**
@@ -71,7 +97,13 @@ public class DzcService {
         }
     }
 
-//    public List<TimeSheetEntity> checkIfDatesAreIncompatible(DzcDto dzc) {
-//        return excelRepository.findByDzc(dzc);
-//    }
+    /**
+     * Method find all items by incoming Dzc from POST request
+     *
+     * @param dzc incoming dzc value
+     * @return List of suitable records from database
+     */
+    public List<TimeSheetEntity> getAllRecordsByDzc(DzcDto dzc) {
+        return dzcRepository.findByDzc(dzcMapper.mapToEntity(dzc));
+    }
 }

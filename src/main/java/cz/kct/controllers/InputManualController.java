@@ -1,5 +1,6 @@
 package cz.kct.controllers;
 
+import cz.kct.data.dto.DzcDto;
 import cz.kct.data.dto.TimeSheetDto;
 import cz.kct.data.entity.TimeSheetEntity;
 import cz.kct.services.DzcService;
@@ -43,5 +44,16 @@ public class InputManualController {
     @GetMapping("/v1/join")
     public List<TimeSheetEntity> joinDzcAndTickets() {
         return dzcService.joinTables();
+    }
+
+    /**
+     * Method find all items by incoming Dzc from POST request (Test request)
+     *
+     * @param dzc_id incoming dzc value
+     * @return List of suitable records from database
+     */
+    @PostMapping("/v1/all_items_by_dzc")
+    public List<TimeSheetEntity> joinDzcAndTicketsByOne(@RequestBody DzcDto dzc_id) {
+        return dzcService.getAllRecordsByDzc(dzc_id);
     }
 }
