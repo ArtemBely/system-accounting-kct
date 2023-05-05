@@ -33,3 +33,49 @@ HSSF (Horrible SpreadSheet Format) Implementation: It denotes an API that is wor
 XSSF (XML SpreadSheet Format) Implementation: It denotes an API that is working with Excel 2007 or later versions.
 
 Or just use universal Workbook object (viz ExcelUtility / ExcelService)
+
+## Generation of uuid by adding new record. Need to have extension in pgadmin:
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+## Check if it works
+SELECT uuid_generate_v4();
+
+## Create table system_accounting_kct from pgadmin
+
+-- Table: public.system_accounting_kct
+
+-- DROP TABLE IF EXISTS public.system_accounting_kct;
+
+CREATE TABLE IF NOT EXISTS public.system_accounting_kct
+(
+id uuid DEFAULT 'uuid_generate_v4()',
+date date NOT NULL,
+type_of_item integer NOT NULL,
+hours numeric(3,1) NOT NULL,
+project_name character varying(20) COLLATE pg_catalog."default" NOT NULL,
+description character varying(200) COLLATE pg_catalog."default" NOT NULL,
+kind character varying(30) COLLATE pg_catalog."default",
+dzc_id character varying(10) COLLATE pg_catalog."default" NOT NULL,
+CONSTRAINT system_accounting_kct_dzc_id_fkey FOREIGN KEY (dzc_id)
+REFERENCES public.dzc (dzc) MATCH SIMPLE
+ON UPDATE NO ACTION
+ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+## Create table dzc from pgadmin
+
+-- Table: public.dzc
+
+-- DROP TABLE IF EXISTS public.dzc;
+
+CREATE TABLE IF NOT EXISTS public.dzc
+(
+dzc character varying(10) COLLATE pg_catalog."default" NOT NULL,
+CONSTRAINT dzc_pkey PRIMARY KEY (dzc)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.dzc
+OWNER to postgres;
