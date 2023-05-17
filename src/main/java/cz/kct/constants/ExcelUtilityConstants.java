@@ -13,4 +13,5 @@ public class ExcelUtilityConstants {
     public static final int DZC_ROW = 4;
     public static final int HOURS_ROW = 2;
     public static final int DESCRIPTION_ROW = 22;
+    public static final int EPIC_NUMBER_ROW = 20;
 }
