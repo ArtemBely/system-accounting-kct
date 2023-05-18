@@ -22,12 +22,14 @@ public class ProjectNumberUtility {
      */
     public String defineProjectNumber(String inputAccountName, String inputIssueSummary, String inputEpicValue, List<OrderEntity> orderEntityList) {
         String number = DefinitionUtility.defineKind(inputAccountName, inputIssueSummary);
-        if (number.equals(KindEnum.SUPPORT.getValue())) {
-            return ProjectNumberUtilityConstants.SUPPORT_IDENTIFICATION_NUMBER;
-        } else if (number.equals(KindEnum.DEVELOPMENT.getValue())) {
-            String orderId = findEpic(getEpicIdOnly(inputEpicValue), orderEntityList);
-            return orderId.length() > 0 ? orderNumberFromSap(orderId) : ProjectNumberUtilityConstants.DEV_IDENTIFICATION_NUMBER;
-        } else return ProjectNumberUtilityConstants.VISPART_IDENTIFICATION_NUMBER;
+        return switch (KindEnum.fromValue(number)) {
+            case SUPPORT -> ProjectNumberUtilityConstants.SUPPORT_IDENTIFICATION_NUMBER;
+            case DEVELOPMENT -> {
+                String orderId = findEpic(getEpicIdOnly(inputEpicValue), orderEntityList);
+                yield orderId.length() > 0 ? orderNumberFromSap(orderId) : ProjectNumberUtilityConstants.DEV_IDENTIFICATION_NUMBER;
+            }
+            default -> ProjectNumberUtilityConstants.VISPART_IDENTIFICATION_NUMBER;
+        };
     }
 
     public String getEpicIdOnly(String inputEpicValue) {

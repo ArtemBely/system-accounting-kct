@@ -13,4 +13,12 @@ public enum KindEnum {
     public String getValue() {
         return value;
     }
+    public static KindEnum fromValue(String value) {
+        for (KindEnum enumConstant : KindEnum.values()) {
+            if (enumConstant.getValue().equals(value)) {
+                return enumConstant;
+            }
+        }
+        throw new IllegalArgumentException("No enum constant with value: " + value);
+    }
 }

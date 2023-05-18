@@ -18,15 +18,13 @@ public class DefinitionUtility {
      * @see cz.kct.data.enums.KindEnum
      */
     public String defineKind(String inputAccountName, String inputIssueSummary) {
-        String output;
         if (inputAccountName.equals(DefinitionUtilityConstants.DEFINE_SUPPORT)) {
-            output = KindEnum.SUPPORT.getValue();
+            return KindEnum.SUPPORT.getValue();
         } else if (inputAccountName.equals(DefinitionUtilityConstants.DEFINE_DEV) || findDefinition(inputIssueSummary)) {
-            output = KindEnum.DEVELOPMENT.getValue();
+            return KindEnum.DEVELOPMENT.getValue();
         } else {
-            output = KindEnum.VISPART.getValue();
+            return KindEnum.VISPART.getValue();
         }
-        return output;
     }
 
     /**
